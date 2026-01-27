@@ -37,41 +37,6 @@ async def health_check(_: Request) -> JSONResponse:
     )
 
 
-@mcp.custom_route("/", methods=["GET"], include_in_schema=False)
-async def root(_: Request) -> JSONResponse:
-    return JSONResponse(
-        status_code=200,
-        content={
-            "name": "Weather MCP Server",
-            "version": "1.0.0",
-            "description": "MCP server providing real-time weather information",
-            "endpoints": {
-                "health": "/health",
-                "docs": "/docs",
-            },
-            "mcp_tools": [
-                "get_current_weather",
-                "get_forecast",
-                "get_weather_alerts",
-            ],
-            "mcp_resources": [
-                "weather://cities/supported",
-            ],
-        },
-    )
-
-
-@mcp.custom_route("/metrics", methods=["GET"], include_in_schema=False)
-async def metrics(_: Request) -> JSONResponse:
-    return JSONResponse(
-        status_code=200,
-        content={
-            "server": "weather-mcp",
-            "uptime": "available via container stats",
-            "timestamp": datetime.utcnow().isoformat(),
-        },
-    )
-
 SUPPORTED_CITIES = {
     "london": {"lat": 51.5074, "lon": -0.1278, "name": "London, UK"},
     "new york": {"lat": 40.7128, "lon": -74.0060, "name": "New York, USA"},
@@ -358,4 +323,4 @@ def get_weather_condition(code: int) -> str:
 if __name__ == "__main__":
     # Run the MCP server
     logger.info("Starting Weather MCP Server...")
-    mcp.run()
+    mcp.run(transport="stdio")
