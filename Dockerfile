@@ -48,4 +48,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 EXPOSE 8080
 
 # Default command (can be overridden in docker-compose)
-CMD ["python", "-m", "uvicorn", "server.health_server:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["python", "server/run_http.py"]

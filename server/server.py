@@ -8,6 +8,10 @@ from typing import Optional, Dict, Any, List
 from datetime import datetime, timedelta
 import httpx
 from mcp.server.fastmcp import FastMCP
+from starlette.requests import Request
+from starlette.responses import JSONResponse
+
+from server.config import OPEN_METEO_BASE_URL, OPEN_METEO_API_KEY, OPEN_METEO_TIMEOUT
 
 # Configure logging
 logging.basicConfig(
@@ -19,6 +23,55 @@ logger = logging.getLogger(__name__)
 # Init FastMCP server
 mcp = FastMCP("weather-server")
 
+
+@mcp.custom_route("/health", methods=["GET"], include_in_schema=False)
+async def health_check(_: Request) -> JSONResponse:
+    return JSONResponse(
+        status_code=200,
+        content={
+            "status": "healthy",
+            "service": "weather-mcp-server",
+            "timestamp": datetime.utcnow().isoformat(),
+            "version": "1.0.0",
+        },
+    )
+
+
+@mcp.custom_route("/", methods=["GET"], include_in_schema=False)
+async def root(_: Request) -> JSONResponse:
+    return JSONResponse(
+        status_code=200,
+        content={
+            "name": "Weather MCP Server",
+            "version": "1.0.0",
+            "description": "MCP server providing real-time weather information",
+            "endpoints": {
+                "health": "/health",
+                "docs": "/docs",
+            },
+            "mcp_tools": [
+                "get_current_weather",
+                "get_forecast",
+                "get_weather_alerts",
+            ],
+            "mcp_resources": [
+                "weather://cities/supported",
+            ],
+        },
+    )
+
+
+@mcp.custom_route("/metrics", methods=["GET"], include_in_schema=False)
+async def metrics(_: Request) -> JSONResponse:
+    return JSONResponse(
+        status_code=200,
+        content={
+            "server": "weather-mcp",
+            "uptime": "available via container stats",
+            "timestamp": datetime.utcnow().isoformat(),
+        },
+    )
+
 SUPPORTED_CITIES = {
     "london": {"lat": 51.5074, "lon": -0.1278, "name": "London, UK"},
     "new york": {"lat": 40.7128, "lon": -74.0060, "name": "New York, USA"},
@@ -28,10 +81,6 @@ SUPPORTED_CITIES = {
     "toronto": {"lat": 43.6532, "lon": -79.3832, "name": "Toronto, Canada"},
     "singapore": {"lat": 1.3521, "lon": 103.8198, "name": "Singapore"},
 }
-
-# Open-Meteo API base URL
-OPEN_METEO_BASE_URL = "https://api.open-meteo.com/v1/forecast"
-
 
 def get_city_coords(city: str) -> Optional[Dict[str, Any]]:
     """Get coordinates for a city"""
@@ -48,9 +97,11 @@ async def fetch_weather_data(lat: float, lon: float, params: Dict[str, Any]) -> 
         "longitude": lon,
         "timezone": "auto"
     }
+    if OPEN_METEO_API_KEY:
+        base_params["apikey"] = OPEN_METEO_API_KEY
     base_params.update(params)
     
-    async with httpx.AsyncClient(timeout=30.0) as client:
+    async with httpx.AsyncClient(timeout=OPEN_METEO_TIMEOUT) as client:
         try:
             response = await client.get(OPEN_METEO_BASE_URL, params=base_params)
             response.raise_for_status()

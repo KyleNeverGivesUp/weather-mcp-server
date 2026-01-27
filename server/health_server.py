@@ -3,6 +3,7 @@ Health check endpoint and HTTP server for Weather MCP
 Combines health checks with MCP server functionality
 """
 import logging
+import sys
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from datetime import datetime
@@ -11,7 +12,8 @@ import asyncio
 # Configure logging for HTTP mode (JSON structured logging)
 logging.basicConfig(
     level=logging.INFO,
-    format='{"timestamp": "%(asctime)s", "level": "%(levelname)s", "logger": "%(name)s", "message": "%(message)s"}'
+    format='{"timestamp": "%(asctime)s", "level": "%(levelname)s", "logger": "%(name)s", "message": "%(message)s"}',
+    stream=sys.stdout
 )
 logger = logging.getLogger(__name__)
 

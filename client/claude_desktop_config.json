@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "weather-mcp": {
+      "command": "python",
+      "args": ["-u", "server/run_stdio.py"],
+      "cwd": "/absolute/path/to/weather-mcp-server"
+    }
+  }
+}
