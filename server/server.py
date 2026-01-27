@@ -23,20 +23,6 @@ logger = logging.getLogger(__name__)
 # Init FastMCP server
 mcp = FastMCP("weather-server")
 
-
-@mcp.custom_route("/health", methods=["GET"], include_in_schema=False)
-async def health_check(_: Request) -> JSONResponse:
-    return JSONResponse(
-        status_code=200,
-        content={
-            "status": "healthy",
-            "service": "weather-mcp-server",
-            "timestamp": datetime.utcnow().isoformat(),
-            "version": "1.0.0",
-        },
-    )
-
-
 SUPPORTED_CITIES = {
     "london": {"lat": 51.5074, "lon": -0.1278, "name": "London, UK"},
     "new york": {"lat": 40.7128, "lon": -74.0060, "name": "New York, USA"},
@@ -319,6 +305,18 @@ def get_weather_condition(code: int) -> str:
     }
     return conditions.get(code, f"Unknown ({code})")
 
+
+@mcp.custom_route("/health", methods=["GET"], include_in_schema=False)
+async def health_check(_: Request) -> JSONResponse:
+    return JSONResponse(
+        status_code=200,
+        content={
+            "status": "healthy",
+            "service": "weather-mcp-server",
+            "timestamp": datetime.utcnow().isoformat(),
+            "version": "1.0.0",
+        },
+    )
 
 if __name__ == "__main__":
     # Run the MCP server
