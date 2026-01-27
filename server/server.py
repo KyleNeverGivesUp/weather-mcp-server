@@ -6,7 +6,7 @@ import asyncio
 import logging
 from typing import Optional, Dict, Any, List
 from datetime import datetime, timedelta
-import httpx
+# import httpx
 from mcp.server.fastmcp import FastMCP
 from starlette.requests import Request
 from starlette.responses import JSONResponse

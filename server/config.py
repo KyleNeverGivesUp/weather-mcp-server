@@ -2,10 +2,10 @@
 from __future__ import annotations
 
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
 # Load environment variables from .env if present
-load_dotenv()
+# load_dotenv()
 
 OPEN_METEO_BASE_URL = os.getenv("OPEN_METEO_BASE_URL", "https://api.open-meteo.com/v1/forecast")
 OPEN_METEO_API_KEY = os.getenv("OPEN_METEO_API_KEY")
