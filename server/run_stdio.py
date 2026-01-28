@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 if __name__ == "__main__":
     logger.info("Starting Weather MCP Server in STDIO mode...")
-    logger.info("Transport: STDIO (for Claude Desktop)")
+    logger.info("Transport: STDIO")
     
     try:
         # Run with STDIO transport
