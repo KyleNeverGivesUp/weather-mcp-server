@@ -9,13 +9,7 @@ import os
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from server.server import (
-    get_current_weather,
-    get_forecast,
-    get_weather_alerts,
-    get_supported_cities,
-    SUPPORTED_CITIES
-)
+from server.server import get_current_weather, get_forecast, get_weather_alerts, get_supported_cities, SUPPORTED_CITIES
 
 async def test_current_weather():
     """Test current weather for multiple cities"""
