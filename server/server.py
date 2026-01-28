@@ -76,7 +76,7 @@ async def get_current_weather(city: str) -> str:
         city: Name of the city (e.g., "London", "New York", "Tokyo")
     
     Returns:
-        Current weather information including temperature, conditions, humidity, and wind
+        Current weather information including temperature, conditions, humidity, and wind.
     """
     logger.info(f"Fetching current weather for {city}")
     
