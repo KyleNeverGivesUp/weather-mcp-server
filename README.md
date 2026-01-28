@@ -76,3 +76,7 @@ Health check:
 ```bash
 curl http://localhost:8080/health
 ```
+
+---
+
+Built by Kyle Hu with passion
