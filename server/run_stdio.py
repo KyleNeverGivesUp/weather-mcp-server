@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
 STDIO Transport runner for Weather MCP Server
-Use this for local development with Claude Desktop
 """
 import sys
 import os
