@@ -53,17 +53,6 @@ curl http://localhost:8080/health
 ## MCP Resource
 - `weather://cities/supported`
 
-## Environment
-Create a `.env` file (or copy `.env.example`).
-```
-OPEN_METEO_API_KEY=
-OPEN_METEO_BASE_URL=https://api.open-meteo.com/v1/forecast
-OPEN_METEO_TIMEOUT=30
-LOG_LEVEL=INFO
-```
-
-Open-Meteo does not require an API key for the free tier, but the env var is supported for compatibility.
-
 ## STDIO Test Example
 This launches the server process and calls a tool over STDIO.
 ```bash

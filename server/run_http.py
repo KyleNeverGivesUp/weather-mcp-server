@@ -4,18 +4,12 @@ HTTP Transport runner for Weather MCP Server
 Use this for production deployment with SSE transport
 """
 import sys
-import os
 import logging
 
 # Add parent directory to path for imports
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from server.config import LOG_LEVEL
-
-# Ensure FastMCP binds to the expected host/port in HTTP mode
-os.environ.setdefault("FASTMCP_HOST", "0.0.0.0")
-os.environ.setdefault("FASTMCP_PORT", "8080")
-os.environ.setdefault("FASTMCP_LOG_LEVEL", LOG_LEVEL)
+LOG_LEVEL = "INFO"
 
 from server.server import mcp
 
@@ -37,4 +31,7 @@ if __name__ == "__main__":
     logger.info("MCP SSE endpoint: http://0.0.0.0:8080/sse")
     logger.info("MCP message endpoint: http://0.0.0.0:8080/messages/")
 
+    mcp.settings.host = "0.0.0.0"
+    mcp.settings.port = 8080
+    mcp.settings.log_level = LOG_LEVEL
     mcp.run(transport="sse")

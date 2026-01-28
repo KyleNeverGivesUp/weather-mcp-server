@@ -4,14 +4,14 @@ Provides real-time weather information using Open-Meteo API
 """
 import asyncio
 import logging
+import os
 from typing import Optional, Dict, Any, List
 from datetime import datetime, timedelta
-# import httpx
+import httpx
 from mcp.server.fastmcp import FastMCP
+from dotenv import load_dotenv
 from starlette.requests import Request
 from starlette.responses import JSONResponse
-
-from server.config import OPEN_METEO_BASE_URL, OPEN_METEO_API_KEY, OPEN_METEO_TIMEOUT
 
 # Configure logging
 logging.basicConfig(
@@ -20,8 +20,18 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Load .env if present
+load_dotenv()
+
 # Init FastMCP server
 mcp = FastMCP("weather-server")
+
+# Open-Meteo config (env-driven, no API key)
+OPEN_METEO_BASE_URL = os.getenv("OPEN_METEO_BASE_URL", "https://api.open-meteo.com/v1/forecast")
+try:
+    OPEN_METEO_TIMEOUT = float(os.getenv("OPEN_METEO_TIMEOUT", "30"))
+except ValueError:
+    OPEN_METEO_TIMEOUT = 30.0
 
 SUPPORTED_CITIES = {
     "london": {"lat": 51.5074, "lon": -0.1278, "name": "London, UK"},
@@ -48,8 +58,6 @@ async def fetch_weather_data(lat: float, lon: float, params: Dict[str, Any]) -> 
         "longitude": lon,
         "timezone": "auto"
     }
-    if OPEN_METEO_API_KEY:
-        base_params["apikey"] = OPEN_METEO_API_KEY
     base_params.update(params)
     
     async with httpx.AsyncClient(timeout=OPEN_METEO_TIMEOUT) as client:
