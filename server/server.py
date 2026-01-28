@@ -28,10 +28,7 @@ mcp = FastMCP("weather-server")
 
 # Open-Meteo config (env-driven, no API key)
 OPEN_METEO_BASE_URL = os.getenv("OPEN_METEO_BASE_URL", "https://api.open-meteo.com/v1/forecast")
-try:
-    OPEN_METEO_TIMEOUT = float(os.getenv("OPEN_METEO_TIMEOUT", "30"))
-except ValueError:
-    OPEN_METEO_TIMEOUT = 30.0
+OPEN_METEO_TIMEOUT = float(os.getenv("OPEN_METEO_TIMEOUT", "30"))
 
 SUPPORTED_CITIES = {
     "london": {"lat": 51.5074, "lon": -0.1278, "name": "London, UK"},
