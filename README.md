@@ -25,6 +25,12 @@ Test via MCP STDIO protocol (auto-starts server):
 python test-client/host-stdio.py
 ```
 
+For Postman MCP Server (STDIO mode), use this command:
+```bash
+/absolute/path/uv run --project /absolute/path/weather-mcp-server python /absolute/path/weather-mcp-server/server/run_stdio.py
+```
+Replace `/absolute/path/` with your actual project path.
+
 ### SSE Transport Test
 Start HTTP server:
 ```bash
@@ -34,6 +40,11 @@ python server/run_http.py
 In another terminal, run SSE client:
 ```bash
 python test-client/test-sse.py
+```
+
+For Postman MCP Server (HTTP mode), use:
+```
+http://localhost:8080/sse
 ```
 
 Endpoints:

@@ -43,6 +43,7 @@ async def test_sse():
                 "get_current_weather",
                 arguments={"city": "Beijing"}
             )
+            
             print(json.dumps(result.model_dump(), indent=2, ensure_ascii=False))
             
             # Test 2: Get forecast
