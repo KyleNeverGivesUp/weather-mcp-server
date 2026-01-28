@@ -4,6 +4,7 @@ HTTP Transport runner for Weather MCP Server
 Use this for production deployment with SSE transport
 """
 import sys
+import os
 import logging
 
 # Add parent directory to path for imports

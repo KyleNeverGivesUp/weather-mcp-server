@@ -51,8 +51,8 @@ tools_msg = {
     "params": {}
 }
 
-proc.stdin.write(json.dumps(tools_msg) + "\n")
-proc.stdin.flush()
+# proc.stdin.write(json.dumps(tools_msg) + "\n")
+# proc.stdin.flush()
 
 # call get_current_weather
 call_msg = {
